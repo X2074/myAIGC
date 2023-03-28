@@ -2,7 +2,7 @@
   "name": "openai-quickstart-node",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://X2074.github.io/myAIGC",
+  "homepage": "https://X2074.github.io/myAIGC/",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
