@@ -1,9 +1,17 @@
 import { Configuration, OpenAIApi } from "openai";
 
 const configuration = new Configuration({
+  organization: "org-btCIbkTSeA8mGKd2NUwXtQhL",
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+// const response = await openai.listEngines();
+// image_url = response.data.data[0].url;
+
+// const configuration = new Configuration({
+//   apiKey: process.env.OPENAI_API_KEY,
+// });
+// const openai = new OpenAIApi(configuration);
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -15,23 +23,24 @@ export default async function (req, res) {
     return;
   }
 
-  const animal = req.body.animal || '';
-  if (animal.trim().length === 0) {
+  const prompts = req.body.prompts || '';
+  if (prompts.trim().length === 0) {
     res.status(400).json({
       error: {
-        message: "Please enter a valid animal",
+        message: "Please enter the prompts",
       }
     });
     return;
   }
 
   try {
-    const completion = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: generatePrompt(animal),
-      temperature: 0.6,
+    const response = await openai.createImage({
+      prompt: prompts,
+      n: 1,
+      size: "1024x1024",
     });
-    res.status(200).json({ result: completion.data.choices[0].text });
+
+    res.status(200).json({ result: response.data.data[0].url });
   } catch(error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
@@ -48,15 +57,15 @@ export default async function (req, res) {
   }
 }
 
-function generatePrompt(animal) {
-  const capitalizedAnimal =
-    animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `Suggest three names for an animal that is a superhero.
-
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: ${capitalizedAnimal}
-Names:`;
-}
+// function generatePrompt(animal) {
+//   const capitalizedAnimal =
+//     animal[0].toUpperCase() + animal.slice(1).toLowerCase();
+//   return `Suggest three names for an animal that is a superhero.
+//
+// // Animal: Cat
+// // Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
+// // Animal: Dog
+// // Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
+// Animal: ${capitalizedAnimal}
+// Names:`;
+// }
