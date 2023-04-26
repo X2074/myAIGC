@@ -51,8 +51,37 @@ export default function Home() {
           />
           <input type="submit" value="Generate" />
         </form>
-        <div className={styles.result}>{result}</div>
+        {/*<div className={styles.result}>{result}</div>*/}
+        <div className={styles.result}>{result && <img src={result} alt="generated image" width="600" height="600"/>}</div>
+
       </main>
     </div>
   );
 }
+
+
+// import React from 'react';
+//
+// class DownloadButton extends React.Component {
+//   downloadFile() {
+//     // 发送文件下载请求
+//     fetch('/api/download')
+//         .then(response => response.blob())
+//         .then(blob => {
+//           // 创建文件下载链接
+//           const url = window.URL.createObjectURL(new Blob([blob]));
+//           const link = document.createElement('a');
+//           link.href = url;
+//           link.setAttribute('download', 'example.txt');
+//
+//           // 触发链接的点击事件
+//           link.click();
+//         });
+//   }
+//
+//   render() {
+//     return (
+//         <button onClick={this.downloadFile}>下载文件</button>
+//     );
+//   }
+// }
